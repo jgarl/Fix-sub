@@ -4,7 +4,7 @@ import sys
 import pysrt
 
 
-def checkParam():
+def check_param():
     """ check if the parameters are correct """
 
     flag = True
@@ -25,14 +25,14 @@ def checkParam():
 
     return flag
 
-def getList(subs):
+def getnumbers(subs):
     """ return a list of the subs to not shift """
-    _list = []
+    numbers = []
     try:
         if(len(sys.argv) == 6):
-            paramList = sys.argv[5][1:-1]
-            if(paramList.find(":") != -1):
-                splitted = paramList.split(":")
+            param_list = sys.argv[5][1:-1]
+            if(param_list.find(":") != -1):
+                splitted = param_list.split(":")
                 start = 0
                 end = len(subs) - 1
 
@@ -45,62 +45,62 @@ def getList(subs):
                         end = int(splitted[1]) - 1
 
                 for i in range(start, end + 1):
-                    _list.append(int(i))
+                    numbers.append(int(i))
 
-            elif(paramList.find(",") != -1):
-                for i in paramList.split(","):
+            elif(param_list.find(",") != -1):
+                for i in param_list.split(","):
                     if(int(i) > len(subs)):
-                        _list.append(len(subs) - 1)
+                        numbers.append(len(subs) - 1)
                     else:
-                        _list.append(int(i) - 1)
+                        numbers.append(int(i) - 1)
             else:
-                if(int(paramList) > len(subs)):
-                    _list.append(len(subs) - 1)
+                if(int(param_list) > len(subs)):
+                    numbers.append(len(subs) - 1)
                 else:
-                    _list.append(int(paramList) - 1)
+                    numbers.append(int(param_list) - 1)
     except:
-        _list = [-1]
+        numbers = [-1]
         print("Error in last parameter")
 
-    return _list
+    return numbers
 
 def main():
     try:
         subs = pysrt.open(sys.argv[1], encoding='iso-8859-1')
-        subNumbers = getList(subs)
+        sub_numbers = getnumbers(subs)
 
-        if((len(subNumbers) == 0) or (subNumbers[0] != -1)):
+        if((len(sub_numbers) == 0) or (sub_numbers[0] != -1)):
             for i in range(len(subs)):
                 index = i
                 if(len(sys.argv) == 6):
                     if(sys.argv[4] == "-e"):
-                        if(i not in subNumbers):
+                        if(i not in sub_numbers):
                             index = i
                         else:
                             continue
                     else:
-                        if(i in subNumbers):
+                        if(i in sub_numbers):
                             index = i
                         else:
                             continue
                 sub = subs[index]
                 start = sub.start.to_time()
                 end = sub.end.to_time()
-                startTime = (start.hour*3600) + (start.minute*60) + start.second + (start.microsecond/1000000)
-                endTime = (end.hour*3600) + (end.minute*60) + end.second + (end.microsecond/1000000)
+                start_time = (start.hour*3600) + (start.minute*60) + start.second + (start.microsecond/1000000)
+                end_time = (end.hour*3600) + (end.minute*60) + end.second + (end.microsecond/1000000)
                 if(sys.argv[2] == "-f"):
-                    startTime *= float(sys.argv[3])
-                    endTime *= float(sys.argv[3])
+                    start_time *= float(sys.argv[3])
+                    end_time *= float(sys.argv[3])
                 else:
-                    startTime /= float(sys.argv[3])
-                    endTime /= float(sys.argv[3])
+                    start_time /= float(sys.argv[3])
+                    end_time /= float(sys.argv[3])
 
-                microseconds = (str(startTime-int(startTime))[2:])[:3]
-                minutes, seconds = divmod(startTime, 60)
+                microseconds = (str(start_time-int(start_time))[2:])[:3]
+                minutes, seconds = divmod(start_time, 60)
                 hours, minutes = divmod(minutes, 60)
                 sub.start = "%02d:%02d:%02d,%02d"%(int(hours), int(minutes), int(seconds), int(microseconds))
-                microseconds = (str(endTime-int(endTime))[2:])[:3]
-                minutes, seconds = divmod(endTime, 60)
+                microseconds = (str(end_time-int(end_time))[2:])[:3]
+                minutes, seconds = divmod(end_time, 60)
                 hours, minutes = divmod(minutes, 60)
                 sub.end= "%02d:%02d:%02d,%02d"%(int(hours), int(minutes), int(seconds), int(microseconds))
             subs.save('./fixed.srt', encoding='utf-8')
@@ -109,7 +109,7 @@ def main():
         print("Error while opening the file")
 
 if __name__ == "__main__":
-    if(checkParam()):
+    if(check_param()):
         main()
     else:
         print("Error in parameters")
