@@ -25,8 +25,8 @@ def check_param():
 
     return flag
 
-def getnumbers(subs):
-    """ return a list of the subs to not shift """
+def get_list(subs):
+    """ return a list of the subs numbers """
     numbers = []
     try:
         if(len(sys.argv) == 6):
@@ -67,7 +67,7 @@ def getnumbers(subs):
 def main():
     try:
         subs = pysrt.open(sys.argv[1], encoding='iso-8859-1')
-        sub_numbers = getnumbers(subs)
+        sub_numbers = get_list(subs)
 
         if((len(sub_numbers) == 0) or (sub_numbers[0] != -1)):
             for i in range(len(subs)):
