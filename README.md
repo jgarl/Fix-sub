@@ -10,7 +10,7 @@ fix-sub.py <srt-file-name> <mode> <shifting-constant> [options]
 
 The **"shifting-constant"** parameter must be an integer or a double value.
 
-The **mode** parameter must be *-f* (forward subtitles) or *-b* (slow down subtitles)
+The **"mode"** parameter must be *-f* (forward subtitles) or *-b* (slow down subtitles)
 
 In **[options]** you can specify the subtitles that you want to **exclude** or **include** by writing *-e* or *-i* followed by the subtitle numbers:
 
