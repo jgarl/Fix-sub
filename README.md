@@ -1,7 +1,7 @@
 # Fix-sub
 Script for shifting the times from a .srt file. 
 
-# Usage
+## Usage
 To run the script, write the following command:
 
 ```bash
